@@ -1,0 +1,10 @@
+# MacOS
+**/.DS_Store
+
+# Intellij
+**/.idea/
+**/*.iml
+
+# Java
+**/target
+
