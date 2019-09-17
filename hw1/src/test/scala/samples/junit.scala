@@ -7,10 +7,9 @@ import Assert._
 class ERMForDecisionStumpsTest {
 
     @Test
-    def testOK() = assertTrue(true)
+    def testOK() = {
 
-    //    @Test
-    //    def testKO() = assertTrue(false)
+    }
 
 }
 
