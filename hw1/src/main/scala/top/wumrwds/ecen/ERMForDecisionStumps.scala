@@ -72,7 +72,7 @@ object ERMForDecisionStumps extends StrictLogging {
 
         logger.info("+++++ The model output is: F* = {}, j* = {}, θ* = {} +++++", fStar, jStar + 1, thetaStar)
 
-        (fileName, jStar + 1, fStar)
+        (fileName, jStar + 1, thetaStar)
     }
 
     def main(args: Array[String]): Unit = {
