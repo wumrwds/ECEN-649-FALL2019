@@ -18,7 +18,7 @@ def gleam(values: np.ndarray) -> np.ndarray:
     return np.sum(gamma(values), axis=2) / values.shape[2]
 
 
-def open_face(path: str, resize: bool = True, window_size: int = 16) -> Image.Image:
+def open_face(path: str, resize: bool = True, window_size: int = 24) -> Image.Image:
     crop_top = 50
 
     img = Image.open(path)
