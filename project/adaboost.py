@@ -55,8 +55,8 @@ def build_stump_false_positive(data, labels, d, num_steps):
             for inequal in ['lt', 'gt']:
                 threshold = column_min + float(j) * step_size
                 prediction = stump_classify(data_matrix, i, threshold, inequal)
-                errors = np.mat(np.ones((m, 1)))
-                errors[prediction == label_matrix] = 0
+                errors = np.mat(np.ones((m, 0)))
+                errors[prediction != label_matrix and prediction == 1.0] = 1
                 weighted_error = d.T * errors
                 if weighted_error <= 1 - weighted_error:
                     if weighted_error < min_error:
@@ -85,8 +85,8 @@ def build_stump_false_negative(data, labels, d, num_steps):
             for inequal in ['lt', 'gt']:
                 threshold = column_min + float(j) * step_size
                 prediction = stump_classify(data_matrix, i, threshold, inequal)
-                errors = np.mat(np.ones((m, 1)))
-                errors[prediction == label_matrix] = 0
+                errors = np.mat(np.ones((m, 0)))
+                errors[prediction == label_matrix and prediction == -1.0] = 1
                 weighted_error = d.T * errors
                 if weighted_error <= 1 - weighted_error:
                     if weighted_error < min_error:
@@ -100,14 +100,19 @@ def build_stump_false_negative(data, labels, d, num_steps):
     return best_classifier, min_error, best_class_est
 
 
-def train(data, labels, classifier_number_max, num_steps=10.0):
+def train(data, labels, classifier_number_max, num_steps=10.0, metric=0):
     weak_classifier_arr = []
     train_err_arr = []
     m = np.shape(data)[0]
     d = np.mat(np.ones((m, 1)) / m)
     pre_integration_labels_mat = np.mat(np.zeros((m, 1)))
     for i in range(classifier_number_max):
-        best_classifier, error, pre_labels_mat = build_stump(data, labels, d, num_steps)
+        if metric == 0:
+            best_classifier, error, pre_labels_mat = build_stump(data, labels, d, num_steps)
+        elif metric == 1:
+            best_classifier, error, pre_labels_mat = build_stump_false_positive(data, labels, d, num_steps)
+        elif metric == 2:
+            best_classifier, error, pre_labels_mat = build_stump_false_negative(data, labels, d, num_steps)
         alpha = float(0.5 * np.log((1.0 - error) / max(error, 1e-16)))
         best_classifier['alpha'] = alpha
         weak_classifier_arr.append(best_classifier)

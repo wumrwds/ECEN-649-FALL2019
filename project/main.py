@@ -103,14 +103,14 @@ def output_round(features, ada_classifiers, round):
     face_prediction = adaboost.classify(test_face_features, ada_classifiers)
     non_face_prediction = adaboost.classify(test_non_face_features, ada_classifiers)
 
-    false_positive_cnt = count_labels(face_prediction, -1.)
-    false_negative_cnt = count_labels(non_face_prediction, 1.)
+    false_positive_cnt = count_labels(face_prediction[0], -1.)
+    false_negative_cnt = count_labels(non_face_prediction[0], 1.)
     sample_num = len(test_face_features) + len(test_non_face_features)
     test_accuracy = (0. + sample_num - false_positive_cnt - false_negative_cnt) / sample_num
 
     print("Total accuracy: %f" % test_accuracy)
     print("False Positive: %d" % false_positive_cnt)
-    print("False Positive: %d" % false_negative_cnt)
+    print("False Negative: %d" % false_negative_cnt)
 
 
 # round 1
@@ -124,3 +124,15 @@ output_round(features, adaboost_classifiers[0:5], 5)
 
 # round 10
 output_round(features, adaboost_classifiers[0:10], 10)
+
+# use false-positive rate and false-negative rate to train
+print("\n+++++ Train with empirical error +++++")
+output_round(features, adaboost_classifiers[0:5], 5)
+
+print("\n+++++ Train with the false-positive rate +++++")
+adaboost_classifiers_positive = adaboost.train(train_face_features + train_non_face_features, train_face_labels + train_non_face_labels, 5, 1)
+output_round(features, adaboost_classifiers_positive[0:5], 5)
+
+print("\n+++++ Train with the false-negative rate +++++")
+adaboost_classifiers_negative = adaboost.train(train_face_features + train_non_face_features, train_face_labels + train_non_face_labels, 5, 2)
+output_round(features, adaboost_classifiers_negative[0:5], 5)
