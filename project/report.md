@@ -88,17 +88,19 @@ After determining the weak classifier in this round, we need to adjust the weigh
 
 Then, repeat this process until we have completed the required rounds or the training error is 0.
 
+The result of this part is in the section **Testing**.
+
 <br/>
 
 ### Adjust Threshold
 
 ---------
 
+In the real world, there are different standards for the face detection system. We may want to eliminate as much false alarm as possible in daily life, for example, we can tolerate not being recognized as a face but cannot tolerate the whole environment are all recognized as faces. However, if we need to build a system for security reasons, we may not want to miss any of the suspicious moves.
 
+In order to solve this problem, we can use the false positive rate and false negative rate as the metrics to judge our weak classifiers. 
 
-
-
-
+The result of this part is in the section **Testing**.
 
 <br/>
 
@@ -107,8 +109,6 @@ Then, repeat this process until we have completed the required rounds or the tra
 -------
 
 I haven't finished this section yet.
-
-
 
 <br/>
 
@@ -143,16 +143,16 @@ Anyway, the running result of each round is like the below:
 Adaboost rounds: 1
 Type: TWO_VERTICAL
 Position: (4, 4)
-Width: 1
+Width: 2
 Height: 2
 Threshold: 0.078432
 Training accuracy: 0.837135
-Total accuracy: 0.999596
-False Positive: 1
-False Positive: 0
+Total accuracy: 0.818439
+False Positive: 372
+False Negative: 77
 ```
 
-<img src="images/round_1.png" style="zoom:800%;" />
+![](images/round_1_large.png)
 
 
 
@@ -160,34 +160,34 @@ False Positive: 0
 Adaboost rounds: 3
 
 Type: TWO_HORIZONTAL
-Position: (4, 8)
-Width: 4
-Height: 1
-Threshold: 0.087841
-Training accuracy: 0.885954
-Total accuracy: 0.999596
-False Positive: 1
-False Positive: 0
+Position: (10, 4)
+Width: 2
+Height: 6
+Threshold: -0.180392
+Training accuracy: 0.879552
+Total accuracy: 0.811161
+False Positive: 439
+False Negative: 28
 ```
 
-<img src="images/round_2.png" style="zoom:800%;" />
+![](images/round_2_large.png)
 
 
 
 ```
 Adaboost rounds: 5
 Type: FOUR
-Position: (6, 0)
+Position: (0, 1)
 Width: 2
-Height: 8
-Threshold: -0.148235
-Training accuracy: 0.893958
-Total accuracy: 0.999596
-False Positive: 1
-False Positive: 0
+Height: 2
+Threshold: -0.047843
+Training accuracy: 0.899560
+Total accuracy: 0.810352
+False Positive: 453
+False Negative: 16
 ```
 
-<img src="images/round_3.png" style="zoom:800%;" />
+![](images/round_3_large.png)
 
 
 
@@ -195,22 +195,52 @@ False Positive: 0
 Adaboost rounds: 10
 Type: TWO_VERTICAL
 Position: (3, 0)
-Width: 6
-Height: 2
-Threshold: -0.330980
-Training accuracy: 0.921969
-Total accuracy: 0.999596
-False Positive: 1
-False Positive: 0
+Width: 3
+Height: 4
+Threshold: 0.134118
+Training accuracy: 0.931973
+Total accuracy: 0.810756
+False Positive: 459
+False Negative: 9
 ```
 
-<img src="images/round_4.png" style="zoom:800%;" />
+![](images/round_4_large.png)
+
+
+
+There must be something wrong with my code of the building decision stump part. It will always tend to predict a image as a non-face image. I haven't found the reason causes this issue yet.
 
 
 
 #### Adjust Threshold
 
+```
++++++ Train with empirical error +++++
+Adaboost rounds: 5
+Total accuracy: 0.810352
+False Positive: 453
+False Negative: 16
 
++++++ Train with the false-positive rate +++++
+Adaboost rounds: 5
+Total accuracy: 0.809139
+False Positive: 435
+False Negative: 38
+
++++++ Train with the false-negative rate +++++
+Adaboost rounds: 5
+Total accuracy: 0.804691
+False Positive: 470
+False Negative: 1
+```
+
+| Criterion       | Total Accuracy | False Positive | False Negative |
+| --------------- | -------------- | -------------- | -------------- |
+| Empirical Error | 81%            | 90%            | 1%             |
+| False Positive  | 81%            | 87%            | 1%             |
+| False Negative  | 80%            | 94%            | 0%             |
+
+It does decrease the false-positive rate and false-negative rate.
 
 <br/>
 
@@ -238,4 +268,4 @@ If the threshold value is between the second and the third, it is determined as 
 
 In this way, there are 6 errors in total, and then find the one with the smallest error as the threshold.
 
-It will have a better performance compared to my implementation.
+It will have a better performance compared to my implementation. And I'm also thinking about that whether my even step implementation caused the issue of tending to predict a image as a non-face one.

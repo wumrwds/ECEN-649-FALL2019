@@ -2,7 +2,7 @@
 
 Personal repository for ECEN 649 Pattern Recognition at Texas A&M University
 
-The GitHub repository URL is https://github.com/wumrwds/ECEN-649-FALL2019.
+The GitHub repository URL is https://github.com/wumrwds/ECEN-649-FALL2019/tree/master/project.
 
 <br/>
 
@@ -28,5 +28,5 @@ The library I only used externally is numpy.
 
 ### Report
 
-See the link: https://github.com/wumrwds/CSCE-629-FALL2019/blob/master/report.md
+See the link: https://github.com/wumrwds/ECEN-649-FALL2019/blob/master/project/report.md.
 
