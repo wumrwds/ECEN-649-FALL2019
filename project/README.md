@@ -19,7 +19,7 @@ $ python main.py
 To run the train the small scale of images of window 8 x 8, you can run the `testing.py` and it only takes 3-5 minutes:
 
 ```shell
-$ python test.py
+$ python testing.py
 ```
 
 The library I only used externally is numpy.
